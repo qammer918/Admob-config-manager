@@ -18,6 +18,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.appopen.AppOpenAd
+import com.module.remoteconfig.utils.Constants.appOpenSplashId
 
 class AppOpenAdManager(
     private val application: Application
@@ -158,7 +159,7 @@ class AppOpenAdManager(
             try {
                 showAdIfAvailable(AppOpenSlot.MAIN) {
                     if (AdsConstants.fragmentValidForAppOpenAd) {
-                        fetchAd(AppOpenSlot.MAIN, AdsConstants.appOpenInAppId)
+                        fetchAd(AppOpenSlot.MAIN, appOpenSplashId)
                     }
                 }
             } catch (_: Exception) {

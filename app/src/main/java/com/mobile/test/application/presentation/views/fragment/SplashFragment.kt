@@ -5,14 +5,11 @@ import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.ads.adsmodule.ads.ads_states.AdsStates
 import com.ads.adsmodule.ads.bannerad.BannerAdManager
 import com.ads.adsmodule.ads.bannerad.BannerSlot
 import com.ads.adsmodule.ads.open_app.AppOpenSlot
-import com.ads.adsmodule.ads.utils.AdsConstants.isAppInForeground
-import com.ads.adsmodule.ads.utils.dismissLoading
 import com.ads.adsmodule.ads.utils.logD
 import com.ads.adsmodule.ads.utils.showLoading
 import com.mobile.test.application.R
@@ -28,7 +25,6 @@ import com.mobile.test.application.presentation.viewmodel.SplashViewModel
 import com.module.remoteconfig.utils.Constants.appOpenSplashId
 import com.module.remoteconfig.utils.Constants.bannerSplashId
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding::inflate) {
