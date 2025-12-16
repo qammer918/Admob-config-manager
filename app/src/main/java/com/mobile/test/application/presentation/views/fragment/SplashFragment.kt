@@ -1,0 +1,232 @@
+package com.mobile.test.application.presentation.views.fragment
+
+import android.os.Bundle
+import android.os.CountDownTimer
+import android.util.Log
+import android.view.View
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.ads.adsmodule.ads.ads_states.AdsStates
+import com.ads.adsmodule.ads.bannerad.BannerAdManager
+import com.ads.adsmodule.ads.bannerad.BannerSlot
+import com.ads.adsmodule.ads.open_app.AppOpenSlot
+import com.ads.adsmodule.ads.utils.AdsConstants.isAppInForeground
+import com.ads.adsmodule.ads.utils.dismissLoading
+import com.ads.adsmodule.ads.utils.logD
+import com.ads.adsmodule.ads.utils.showLoading
+import com.mobile.test.application.R
+import com.mobile.test.application.app.MyApplication
+import com.mobile.test.application.core.Constants.adShown
+import com.mobile.test.application.core.UnifiedConsentManager
+import com.mobile.test.application.core.beGone
+import com.mobile.test.application.core.beVisible
+import com.mobile.test.application.core.click
+import com.mobile.test.application.core.isPremium
+import com.mobile.test.application.databinding.FragmentSplashBinding
+import com.mobile.test.application.presentation.viewmodel.SplashViewModel
+import com.module.remoteconfig.utils.Constants.appOpenSplashId
+import com.module.remoteconfig.utils.Constants.bannerSplashId
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+
+@AndroidEntryPoint
+class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding::inflate) {
+    private var splashTime = 15000L
+    private var splashTimeInterval = 1000L
+    private var splashAdTimer: CountDownTimer? = null
+    private val application: MyApplication?
+        get() = activity?.application as? MyApplication
+
+    private val splashViewModel: SplashViewModel by viewModels()
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.apply {
+            loadAdOrContinue()
+            application?.appOpenAdManager?.onAdStatus = { slot, status ->
+                logD("AppOpenStatus", status)
+            }
+
+            getStarted.click {
+                val appManager = application?.appOpenAdManager
+                appManager?.fetchAd(AppOpenSlot.SPLASH, appOpenSplashId)
+                activity?.showLoading()
+            }
+        }
+    }
+
+    private fun loadAdOrContinue() {
+//        startLottieAnim()
+        if (!isPremium()) {
+
+//            splashViewModel.setDefaultIds()
+            handleAdmobGDPR()
+        } else {
+            startCountDownTimer(isPremium())
+        }
+    }
+
+
+    private fun handleAdmobGDPR() {
+        binding.textView.text = "Getting consent"
+
+        activity?.let {
+            UnifiedConsentManager.gatherConsentAndInitialize(it) {
+                splashViewModel.fetchRemoteConfig {
+                    binding.textView.text = "Loading ads"
+                    loadAds()
+                    startCountDownTimer(isPremium())
+                }
+            }
+        }
+    }
+
+    fun loadAds() {
+        application?.appOpenAdManager?.fetchAd(AppOpenSlot.SPLASH, appOpenSplashId)
+        loadAndShowBanner()
+    }
+
+    private fun loadAndShowBanner() {
+        BannerAdManager.loadBanner(
+            activity = requireActivity(),
+            container = binding.adContainer,
+            slot = BannerSlot.HOME,
+            adUnitId = bannerSplashId,
+            binding.shimmerLayout.root
+        ) { slot, status ->
+            Log.d("BannerAd", "[$slot] Status: $status")
+
+            when (status) {
+                AdsStates.LOADED -> {
+
+                }
+
+                AdsStates.FAILED_TO_LOAD -> {
+                    showGetStartedButton()
+
+                }
+
+                AdsStates.AD_IMPRESSION -> {
+                    showGetStartedButton()
+                }
+
+                else -> {
+
+                }
+
+            }
+        }
+    }
+
+    private fun showGetStartedButton() {
+        binding.getStarted.beVisible()
+        binding.textView.beGone()
+        binding.progressBar.beGone()
+    }
+
+    private fun startCountDownTimer(premium: Boolean) {
+        splashAdTimer = null
+        if (premium) {
+            premiumUserTimer()
+        } else {
+            freeUserTimer()
+        }
+    }
+
+
+    private fun freeUserTimer() {
+        splashAdTimer = object : CountDownTimer(splashTime, splashTimeInterval) {
+            override fun onTick(millisUntilFinished: Long) {
+                Log.d("TAG->", "onTick:$millisUntilFinished ")
+                showLoadedAd(millisUntilFinished)
+            }
+
+            override fun onFinish() {
+                application?.appOpenAdManager?.showAdIfAvailable(AppOpenSlot.SPLASH) {
+                    findNavController().navigate(R.id.action_SplashFragment_to_UserListFragment)
+                }
+            }
+        }
+        splashAdTimer?.start()
+    }
+
+    private fun showLoadedAd(millisUntilFinished: Long) {
+        val allLoaded = application?.appOpenAdManager?.appOpenAds[AppOpenSlot.SPLASH] != null
+        val allFailed = application?.appOpenAdManager?.loadFailedMap[AppOpenSlot.SPLASH]
+        Log.d("TAG->", "onTickOut:$millisUntilFinished ")
+        if ((allLoaded) || allFailed == true) {
+            cancelCountDownTimer()
+            Log.d("TAG->", "onTickIn:$millisUntilFinished ")
+            application?.appOpenAdManager?.showAdIfAvailable(AppOpenSlot.SPLASH) {
+                findNavController().navigate(R.id.action_SplashFragment_to_UserListFragment)
+            }
+        }
+    }
+
+    private fun premiumUserTimer() {
+        splashAdTimer = object : CountDownTimer(3000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+
+            }
+
+            override fun onFinish() {
+                findNavController().navigate(R.id.action_SplashFragment_to_UserListFragment)
+
+            }
+
+        }
+        splashAdTimer?.start()
+    }
+
+    private fun handleTimerOnResume() {
+        if (isPremium()) {
+            startCountDownTimer(true)
+        } else {
+            if (splashAdTimer != null && !adShown) {
+                startCountDownTimer(isPremium())
+            }
+        }
+    }
+
+
+    fun checkAndNavigate() {
+        findNavController().navigate(R.id.action_SplashFragment_to_UserListFragment)
+    }
+
+    private fun handleTimerOnPause() {
+        cancelCountDownTimer()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        handleTimerOnPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        handleTimerOnResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cancelCountDownTimer()
+        adShown = false
+
+    }
+
+    override fun onDestroyView() {
+        application?.appOpenAdManager?.destroyAd()
+        application?.appOpenAdManager?.onAdStatus = null
+        BannerAdManager.destroyBanner(BannerSlot.HOME)
+        super.onDestroyView()
+
+    }
+
+    private fun cancelCountDownTimer() {
+        splashAdTimer?.cancel()
+    }
+
+
+}
