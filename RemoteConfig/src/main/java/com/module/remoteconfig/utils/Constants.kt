@@ -13,5 +13,8 @@ object Constants {
     var nativeLanguageId = ""
 
     var showMyButton = false
+    var testingString = ""
+    var testingString2 = ""
+    var versionNumber = ""
 
 }

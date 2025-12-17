@@ -2,7 +2,7 @@ package com.module.remoteconfig.models
 
 import com.google.gson.annotations.SerializedName
 
-class AdModel(
+data class RemoteModel(
     @SerializedName("show") var show: Boolean = false,
-    @SerializedName("ad_id") var adId: String = ""
+    @SerializedName("value") var value: String = ""
 )

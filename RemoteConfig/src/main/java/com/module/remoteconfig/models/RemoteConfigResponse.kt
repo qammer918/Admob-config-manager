@@ -8,37 +8,47 @@ import com.google.gson.annotations.SerializedName
 data class RemoteConfigResponse(
 
     @SerializedName("app_open_splash")
-    var appOpenSplash: AdModel? = AdModel(),
+    var appOpenSplash: RemoteModel? = RemoteModel(),
 
     @SerializedName("app_open_in_app")
-    var appOpenInApp: AdModel? = AdModel(),
+    var appOpenInApp: RemoteModel? = RemoteModel(),
 
     @SerializedName("banner_splash")
-    var bannerSplash: AdModel? = AdModel(),
+    var bannerSplash: RemoteModel? = RemoteModel(),
 
     @SerializedName("interstitial_function")
-    var interstitialFunction: AdModel? = AdModel(),
+    var interstitialFunction: RemoteModel? = RemoteModel(),
 
     @SerializedName("native_on_boarding")
-    var nativeOnBoarding: AdModel? = AdModel(),
+    var nativeOnBoarding: RemoteModel? = RemoteModel(),
 
     @SerializedName("native_on_boarding_2")
-    var nativeOnBoarding2: AdModel? = AdModel(),
+    var nativeOnBoarding2: RemoteModel? = RemoteModel(),
 
     @SerializedName("native_exit")
-    var nativeExit: AdModel? = AdModel(),
+    var nativeExit: RemoteModel? = RemoteModel(),
 
     @SerializedName("native_functions")
-    var nativeFunctions: AdModel? = AdModel(),
+    var nativeFunctions: RemoteModel? = RemoteModel(),
 
     @SerializedName("native_home")
-    var nativeHome: AdModel? = AdModel(),
+    var nativeHome: RemoteModel? = RemoteModel(),
 
     @SerializedName("native_language")
-    var nativeLanguage: AdModel? = AdModel(),
+    var nativeLanguage: RemoteModel? = RemoteModel(),
 
     @SerializedName("show_button")
-    var showButton: AdModel? = AdModel(),
+    var showButton: RemoteModel? = RemoteModel(),
+
+    @SerializedName("test_string")
+    var testString: RemoteModel? = RemoteModel(),
+
+
+    @SerializedName("test_string_2")
+    var testString2: RemoteModel? = RemoteModel(),
+
+    @SerializedName("version_number")
+    var version: RemoteModel? = RemoteModel(),
 
 
 )
