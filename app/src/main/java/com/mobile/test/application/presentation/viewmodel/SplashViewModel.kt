@@ -7,9 +7,6 @@ import com.module.remoteconfig.repos.interfaces.RemoteConfigRepository
 import com.module.remoteconfig.states.RemoteConfigSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -19,61 +16,47 @@ class SplashViewModel @Inject constructor(private var remoteConfigRepository: Re
     ViewModel() {
 
 
-    private val _remoteConfigSource =
-        MutableStateFlow<RemoteConfigSource?>(null)
+    /*    fun fetchRemoteConfig(onResponse: () -> Unit) {
+            viewModelScope.launch(Dispatchers.IO) {
+                remoteConfigRepository.getRemoteResponsee()
 
-    val remoteConfigSource: StateFlow<RemoteConfigSource?> =
-        _remoteConfigSource.asStateFlow()
+                withContext(Dispatchers.Main) {
+                    onResponse.invoke()
+                }
+            }
+        */
 
-    fun getRemoteResponse() = viewModelScope.launch(Dispatchers.IO) {
-        remoteConfigRepository.getRemoteResponse()
-
-
-    }
-
-    fun fetchRemoteConfig() {
-        viewModelScope.launch {
-            val result = remoteConfigRepository.getRemoteResponsee()
-            _remoteConfigSource.value = result
-        }
-    }
 
 
     fun fetchRemoteConfig(onResponse: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            remoteConfigRepository.getRemoteResponsee()
+            when (remoteConfigRepository.getRemoteResponsee()) {
+                RemoteConfigSource.Remote -> {
+                    //for events
+                    Log.d("RemoteConfigSource-->>", "Using latest remote config")
+                    withContext(Dispatchers.Main) {
+                        onResponse.invoke()
+                    }
+                }
 
-            withContext(Dispatchers.Main) {
-                onResponse.invoke()
+                RemoteConfigSource.Cache -> {
+                    Log.d("RemoteConfigSource-->>", "Using cached config")
+                    withContext(Dispatchers.Main) {
+                        onResponse.invoke()
+                    }
+                }
+
+                RemoteConfigSource.Default -> {
+                    Log.d("RemoteConfigSource-->>", "Using default IDs")
+                    withContext(Dispatchers.Main) {
+                        onResponse.invoke()
+                    }
+                }
             }
+
+
         }
     }
 
-
-
-//    fun fetchRemoteConfig(onResponse: () -> Unit) = viewModelScope.launch(Dispatchers.IO) {
-//
-//
-//
-//
-//        when (remoteConfigRepository.getRemoteResponsee()) {
-//            RemoteConfigSource.Remote -> {
-//                Log.d("RC-->>", "Using latest remote config")
-//                onResponse.invoke()
-//            }
-//            RemoteConfigSource.Cache -> {
-//                Log.d("RC-->>", "Using cached config")
-//                onResponse.invoke()
-//            }
-//            RemoteConfigSource.Default -> {
-//                Log.d("RC-->>", "Using default IDs")
-//                onResponse.invoke()
-//            }
-//        }
-//    }
-
-    fun setDefaultIds() {
-        remoteConfigRepository.setDefaultIds()
-    }
-
 }
+

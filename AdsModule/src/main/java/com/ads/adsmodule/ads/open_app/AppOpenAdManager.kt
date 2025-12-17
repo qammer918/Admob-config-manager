@@ -10,6 +10,7 @@ import com.ads.adsmodule.ads.utils.AdsConstants
 import com.ads.adsmodule.ads.utils.AdsConstants.appOpenIsShown
 import com.ads.adsmodule.ads.utils.isPremium
 import com.ads.adsmodule.ads.utils.isWindowAttached
+import com.ads.adsmodule.ads.utils.logD
 import com.ads.adsmodule.ads.utils.safeDismissAppOpenLoading
 import com.ads.adsmodule.ads.utils.safeShowAppOpenLoading
 import com.google.android.gms.ads.AdActivity
@@ -81,7 +82,7 @@ class AppOpenAdManager(
         )
     }
 
-    /** Public API to show ad (if available) */
+    /** show ad (if available) */
 
 
     fun showAdIfAvailable(slot: AppOpenSlot, onDismissed: () -> Unit) {
@@ -189,14 +190,6 @@ class AppOpenAdManager(
                 }
             }
             dialogHostActivity = null
-
-
-            /*   dialogHostActivity?.let { host ->
-                   if (!host.isFinishing && !host.isDestroyed) {
-                       host.dismissAppOpenLoading()
-                   }
-               }
-               dialogHostActivity = null*/
             appOpenAds[slot] = null
             isShowingMap[slot] = false
             appOpenIsShown = true
@@ -205,7 +198,6 @@ class AppOpenAdManager(
         }
 
         override fun onAdFailedToShowFullScreenContent(error: AdError) {
-            /* currentActivity?.dismissAppOpenLoading()*/
             dialogHostActivity?.let { host ->
                 if (!host.isFinishing && !host.isDestroyed) {
                     host.safeDismissAppOpenLoading()
@@ -213,13 +205,7 @@ class AppOpenAdManager(
                     // host is dead — ensure dialog ref removed
                 }
             }
-            /*   dialogHostActivity?.let { host ->
-                   if (!host.isFinishing && !host.isDestroyed) {
-                       host.dismissAppOpenLoading()
-                   }
-               }*/
             dialogHostActivity = null
-
             appOpenAds[slot] = null
             isShowingMap[slot] = false
             appOpenIsShown = false
@@ -232,7 +218,6 @@ class AppOpenAdManager(
     fun destroyAd() {
         appOpenAds.clear()
         currentActivity = null
-        AdsConstants.fragmentValidForAppOpenAd = false
 
     }
 
@@ -244,7 +229,6 @@ class AppOpenAdManager(
         onAdStatus?.invoke(slot, "destroyed")
     }
 
-
     // region ActivityLifecycleCallbacks
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
     override fun onActivityStarted(activity: Activity) {
@@ -253,10 +237,14 @@ class AppOpenAdManager(
 
     override fun onActivityResumed(activity: Activity) {
         currentActivity = activity
+
+
     }
 
     override fun onActivityPaused(activity: Activity) {}
-    override fun onActivityStopped(activity: Activity) {}
+    override fun onActivityStopped(activity: Activity) {
+
+    }
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
     override fun onActivityDestroyed(activity: Activity) {}
 

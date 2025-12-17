@@ -169,15 +169,11 @@ object NativeAdManager {
         adView: NativeAdView,
         showMedia: Boolean
     ) {
-//        adView.mediaView = adView.findViewById(R.id.ad_media)
         adView.headlineView = adView.findViewById(R.id.ad_headline)
         adView.bodyView = adView.findViewById(R.id.ad_body)
         adView.callToActionView = adView.findViewById(R.id.ad_call_to_action)
         adView.iconView = adView.findViewById(R.id.ad_app_icon)
-
         (adView.headlineView as? TextView)?.text = nativeAd.headline
-//        adView.mediaView?.mediaContent = nativeAd.mediaContent
-//        adView.mediaView?.visibility = if (showMedia) View.VISIBLE else View.GONE
 
         if (showMedia) {
             adView.mediaView = adView.findViewById(R.id.ad_media)

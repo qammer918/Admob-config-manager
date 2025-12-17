@@ -214,7 +214,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
 
     override fun onDestroyView() {
         application?.appOpenAdManager?.destroyAd()
-        application?.appOpenAdManager?.onAdStatus = null
+//        application?.appOpenAdManager?.onAdStatus = null
         BannerAdManager.destroyBanner(BannerSlot.HOME)
         super.onDestroyView()
 
