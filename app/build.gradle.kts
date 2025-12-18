@@ -90,4 +90,8 @@ dependencies {
     implementation(project(":RemoteConfig"))
 
     implementation(libs.play.services.ads)
+
+    // billing
+    implementation(libs.billing)
+
 }

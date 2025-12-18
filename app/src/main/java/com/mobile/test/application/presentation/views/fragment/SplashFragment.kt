@@ -46,18 +46,13 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
             }
 
             getStarted.click {
-                val appManager = application?.appOpenAdManager
-                appManager?.fetchAd(AppOpenSlot.SPLASH, appOpenSplashId)
-                activity?.showLoading()
+             checkAndNavigate()
             }
         }
     }
 
     private fun loadAdOrContinue() {
-//        startLottieAnim()
         if (!isPremium()) {
-
-//            splashViewModel.setDefaultIds()
             handleAdmobGDPR()
         } else {
             startCountDownTimer(isPremium())
@@ -67,7 +62,6 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
 
     private fun handleAdmobGDPR() {
         binding.textView.text = "Getting consent"
-
         activity?.let {
             UnifiedConsentManager.gatherConsentAndInitialize(it) {
                 splashViewModel.fetchRemoteConfig {

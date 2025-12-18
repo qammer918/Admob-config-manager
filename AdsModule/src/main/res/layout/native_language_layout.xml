@@ -50,7 +50,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="8dp"
-            android:background="?colorPrimary"
+            android:background="@drawable/bg_large_natives"
             android:paddingHorizontal="6dp"
             android:paddingVertical="1dp"
             android:text="Ad"

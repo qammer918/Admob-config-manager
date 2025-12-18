@@ -24,11 +24,11 @@ navigationFragmentKtxVersion = "2.9.6"
 navigationUiKtxVersion = "2.9.6"
 lifecycleProcessVersion = "2.10.0"
 userMessagingPlatform = "4.0.0"
-
+billing = "7.1.1"
 [libraries]
 play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "playServicesAds" }
 sdp-unit = {group = "com.intuit.sdp" , name = "sdp-android", version.ref = "sdp"}
-
+billing = { group = "com.android.billingclient", name = "billing", version.ref = "billing" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }

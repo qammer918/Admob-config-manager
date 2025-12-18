@@ -18,12 +18,12 @@ abstract class BaseActivity<VB : ViewBinding>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
- /*       enableEdgeToEdge()
+        enableEdgeToEdge()
         ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
-        }*/
+        }
         _binding = bindingInflater.invoke(layoutInflater)
         setContentView(binding.root)
         setupUI()

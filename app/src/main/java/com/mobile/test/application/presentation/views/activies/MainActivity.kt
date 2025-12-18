@@ -20,7 +20,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         binding.apply {
             val navController = findNavController(R.id.nav_host_fragment_content_main)
             appBarConfiguration = AppBarConfiguration(navController.graph)
-//            setupActionBarWithNavController(navController, appBarConfiguration)
         }
         super.setupUI()
 
