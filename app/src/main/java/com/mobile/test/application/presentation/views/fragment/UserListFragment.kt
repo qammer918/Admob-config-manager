@@ -133,12 +133,12 @@ class UserListFragment : BaseFragment<FragmentUserListBinding>(FragmentUserListB
 
     private fun setupClickListeners() {
         binding.fabAddUser.singleClick {
-
-            lifecycleScope.launch {
-                InterstitialAdHelper.showPreloadedAd(requireActivity(), InterstitialSlot.HOME) {
-                    navigateToUserForm()
-                }
-            }
+            navigateToUserForm()
+//            lifecycleScope.launch {
+//                InterstitialAdHelper.showPreloadedAd(requireActivity(), InterstitialSlot.HOME) {
+//                    navigateToUserForm()
+//                }
+//            }
 
         }
     }

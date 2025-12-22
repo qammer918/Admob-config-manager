@@ -65,7 +65,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
         activity?.let {
             UnifiedConsentManager.gatherConsentAndInitialize(it) {
                 splashViewModel.fetchRemoteConfig {
-                    binding.textView.text = "Loading ads"
+                    binding.textView.text = "Loading ads.."
                     loadAds()
                     startCountDownTimer(isPremium())
                 }

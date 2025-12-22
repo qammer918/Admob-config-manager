@@ -178,6 +178,11 @@ class UserFormFragment : BaseFragment<FragmentUserFormBinding>(FragmentUserFormB
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
+
+
+
+
+
                     InterstitialAdHelper.showOnDemandAd(
                         activity = requireActivity(),
                         slot = InterstitialSlot.EXIT,
@@ -235,4 +240,17 @@ class UserFormFragment : BaseFragment<FragmentUserFormBinding>(FragmentUserFormB
 
         return isValid
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        NativeAdManager.destroyAd(NativeAdSlot.SETTINGS)
+        NativeAdManager.destroyAd(NativeAdSlot.NEW)
+        NativeAdManager.destroyAd(NativeAdSlot.NEW2)
+        NativeAdManager.destroyAd(NativeAdSlot.MENU)
+        NativeAdManager.destroyAd(NativeAdSlot.ABOUT)
+
+    }
+
+
 }
