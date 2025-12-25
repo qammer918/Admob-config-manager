@@ -59,7 +59,7 @@ class UserFormFragment : BaseFragment<FragmentUserFormBinding>(FragmentUserFormB
             adContainer = binding.frameInlineNative2,
             adUnitId = "ca-app-pub-3940256099942544/2247696110",
             shimmerView = binding.nativeInline2Shimmer2.root,
-            showMedia = false
+            showMedia = true
         )
 
 

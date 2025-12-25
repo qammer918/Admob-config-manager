@@ -6,7 +6,7 @@ interface RemoteConfigRepository {
 
     suspend fun getRemoteResponse()
     suspend fun getRemoteResponsee(): RemoteConfigSource
-    suspend fun getRemoteMultipleJson(vararg keys: String) //for multiple json
+    suspend fun getRemoteMultipleJson(vararg keys: String) // for multiple json
 
     fun setDefaultIds()
 
