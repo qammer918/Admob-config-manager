@@ -19,3 +19,10 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep class com.ads.adsmodule.ads.ads_states.AdsStates { *; }
+-keep class com.ads.adsmodule.ads.bannerad.** { *; }
+-keep class com.ads.adsmodule.ads.interstitial.** { *; }
+-keep class com.ads.adsmodule.ads.nativeAd.** { *; }
+-keep class com.ads.adsmodule.ads.open_app.** { *; }
+-keep class com.ads.adsmodule.ads.utils.** { *; }

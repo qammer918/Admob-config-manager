@@ -17,16 +17,28 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            resValue("string", "app_open_splash_id", "ca-app-pub-3940256099942544/9257395921")
+            resValue("string", "interstitial_splash_id", "ca-app-pub-3940256099942544/4411468910")
+            resValue("string", "app_open_in_app_id", "ca-app-pub-3940256099942544/9257395921")
+            resValue("string", "banner_splash_id", "ca-app-pub-3940256099942544/9214589741")
+            resValue("string", "interstitial_function_id", "ca-app-pub-3940256099942544/4411468910")
+            resValue("string", "native_onboarding_id", "ca-app-pub-3940256099942544/2247696110")
+            resValue("string", "native_onboarding_id2", "ca-app-pub-3940256099942544/2247696110")
+            resValue("string", "native_exit_id", "ca-app-pub-3940256099942544/2247696110")
+            resValue("string", "native_functions_id", "ca-app-pub-3940256099942544/2247696110")
+            resValue("string", "native_home_id", "ca-app-pub-3940256099942544/2247696110")
+            resValue("string", "native_language_id", "ca-app-pub-3940256099942544/2247696110")
+
         }
 
 
         debug {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
