@@ -1,0 +1,3 @@
+-keep class com.module.remoteconfig.repos.** { *; }
+-keep class com.module.remoteconfig.states.** { *; }
+-keep class com.module.remoteconfig.utils.Constants { *; }

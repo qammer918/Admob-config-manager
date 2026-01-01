@@ -11,7 +11,6 @@ import com.ads.adsmodule.ads.bannerad.BannerAdManager
 import com.ads.adsmodule.ads.bannerad.BannerSlot
 import com.ads.adsmodule.ads.open_app.AppOpenSlot
 import com.ads.adsmodule.ads.utils.logD
-import com.ads.adsmodule.ads.utils.showLoading
 import com.mobile.test.application.R
 import com.mobile.test.application.app.MyApplication
 import com.mobile.test.application.core.Constants.adShown
@@ -21,9 +20,9 @@ import com.mobile.test.application.core.beVisible
 import com.mobile.test.application.core.click
 import com.mobile.test.application.core.isPremium
 import com.mobile.test.application.databinding.FragmentSplashBinding
-import com.mobile.test.application.presentation.viewmodel.SplashViewModel
 import com.module.remoteconfig.utils.Constants.appOpenSplashId
 import com.module.remoteconfig.utils.Constants.bannerSplashId
+import com.module.remoteconfig.viewmodel.RemoteConfigViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,7 +33,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
     private val application: MyApplication?
         get() = activity?.application as? MyApplication
 
-    private val splashViewModel: SplashViewModel by viewModels()
+    private val remoteConfigViewModel: RemoteConfigViewModel by viewModels()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,7 +63,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
         binding.textView.text = "Getting consent"
         activity?.let {
             UnifiedConsentManager.gatherConsentAndInitialize(it) {
-                splashViewModel.fetchRemoteConfig {
+                remoteConfigViewModel.fetchRemoteConfig {
                     binding.textView.text = "Loading ads.."
                     loadAds()
                     startCountDownTimer(isPremium())

@@ -1,30 +1,19 @@
-package com.mobile.test.application.presentation.viewmodel
+package com.module.remoteconfig.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.module.remoteconfig.repos.interfaces.RemoteConfigRepository
 import com.module.remoteconfig.states.RemoteConfigSource
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 @HiltViewModel
-class SplashViewModel @Inject constructor(private var remoteConfigRepository: RemoteConfigRepository) :
+class RemoteConfigViewModel @Inject constructor(private var remoteConfigRepository: RemoteConfigRepository) :
     ViewModel() {
-
-
-    /*    fun fetchRemoteConfig(onResponse: () -> Unit) {
-            viewModelScope.launch(Dispatchers.IO) {
-                remoteConfigRepository.getRemoteResponsee()
-
-                withContext(Dispatchers.Main) {
-                    onResponse.invoke()
-                }
-            }
-        */
 
 
 
@@ -58,5 +47,5 @@ class SplashViewModel @Inject constructor(private var remoteConfigRepository: Re
         }
     }
 
-}
 
+}

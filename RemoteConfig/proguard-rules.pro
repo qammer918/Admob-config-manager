@@ -20,6 +20,11 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class com.module.remoteconfig.repos.** { *; }
--keep class com.module.remoteconfig.states.** { *; }
--keep class com.module.remoteconfig.utils.Constants { *; }
+#-keep class com.module.remoteconfig.repos.** { *; }
+#-keep class com.module.remoteconfig.states.** { *; }
+#-keep class com.module.remoteconfig.utils.Constants { *; }
+##
+### Keep all ViewModels (Hilt + non-Hilt)
+#-keep class * extends androidx.lifecycle.ViewModel { *; }
+#
+-keep class com.module.remoteconfig.** { *; }
