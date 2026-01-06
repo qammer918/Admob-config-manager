@@ -46,9 +46,9 @@ object NativeAdManager {
         showMedia: Boolean = false
     ) {
 
-        if (isPremium()) {
+        if (isPremium() || adUnitId.isEmpty()) {
             shimmerView?.beGone()
-            adContainer?.beVisible()
+            adContainer?.beGone()
             return
         }
 

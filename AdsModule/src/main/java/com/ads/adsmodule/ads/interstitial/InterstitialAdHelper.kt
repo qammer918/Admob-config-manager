@@ -107,7 +107,7 @@ object InterstitialAdHelper {
             logD("interstitialAds", "$slot: $status")
         }
 
-        if (isPremium()) {
+        if (isPremium() || adId.isEmpty()) {
             adCallback?.invoke(slot, "skipped_premium")
             onDismiss()
             return

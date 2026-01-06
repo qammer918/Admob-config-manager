@@ -50,7 +50,7 @@ object BannerAdManager {
         shimmerView: View? = null,
         adCallback: (BannerSlot, AdsStates) -> Unit
     ) {
-        if (isPremium()) {
+        if (isPremium() || adUnitId.isEmpty()) {
             shimmerView?.visibility = View.GONE
             container.removeAllViews()
             return
@@ -93,7 +93,7 @@ object BannerAdManager {
         }
         bannerAds.remove(slot)
 
-// Create new AdView
+        // Create new AdView
         val adView = AdView(activity).apply {
             this.adUnitId = adUnitId
             setAdSize(getAdSize(activity, container))
