@@ -41,7 +41,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
         binding.apply {
             loadAdOrContinue()
             application?.appOpenAdManager?.onAdStatus = { slot, status ->
-                logD("AppOpenStatus", status)
+                logD("AppOpenStatus", "$status:$slot")
             }
 
             getStarted.click {

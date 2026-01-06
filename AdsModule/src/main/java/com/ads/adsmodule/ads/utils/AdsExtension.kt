@@ -17,7 +17,6 @@ fun isPremium(): Boolean {
     return false
 }
 
-
 fun View.beVisible() {
     this.visibility = View.VISIBLE
 }
@@ -29,8 +28,6 @@ fun View.beGone() {
 fun View.beInvisible() {
     this.visibility = View.INVISIBLE
 }
-
-
 
 private var loadingDialog: Dialog? = null
 
@@ -74,15 +71,12 @@ fun Context.dismissLoading() {
     }
 }
 
-
 private var appOpenLoadingDialog: Dialog? = null
-
 
 fun Activity.isWindowAttached(): Boolean {
     val decor = window?.decorView
     return decor != null && decor.isAttachedToWindow
 }
-
 
 private const val SHOW_RETRY_MAX = 2
 private const val SHOW_RETRY_DELAY_MS = 100L
@@ -154,7 +148,6 @@ fun Activity.safeDismissAppOpenLoading() {
         appOpenLoadingDialog = null
     }
 }
-
 
 fun logD(tag: String = "DEFAULT_TAG", message: String = "") {
     if (BuildConfig.DEBUG) {

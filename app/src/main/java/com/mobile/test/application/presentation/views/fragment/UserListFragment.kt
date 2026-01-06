@@ -16,6 +16,7 @@ import com.ads.adsmodule.ads.interstitial.InterstitialSlot
 import com.ads.adsmodule.ads.nativeAd.NativeAdManager
 import com.ads.adsmodule.ads.nativeAd.NativeAdSlot
 import com.ads.adsmodule.ads.open_app.AppOpenSlot
+import com.ads.adsmodule.ads.utils.AdsConstants.fragmentValidForAppOpenAd
 import com.mobile.test.application.R
 import com.mobile.test.application.app.MyApplication
 import com.mobile.test.application.core.beGone
@@ -43,6 +44,7 @@ class UserListFragment : BaseFragment<FragmentUserListBinding>(FragmentUserListB
         setupSearch()
         setupClickListeners()
         observeViewModel()
+        fragmentValidForAppOpenAd=true
 
         val application = activity?.applicationContext as? MyApplication
         application?.appOpenAdManager?.fetchAd(AppOpenSlot.MAIN,appOpenInAppId)

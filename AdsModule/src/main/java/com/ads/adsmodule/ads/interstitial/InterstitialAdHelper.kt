@@ -1,6 +1,7 @@
 package com.ads.adsmodule.ads.interstitial
 
 import android.app.Activity
+import com.ads.adsmodule.ads.utils.AdsConstants.appOpenIsShown
 import com.ads.adsmodule.ads.utils.AdsConstants.isAppInForeground
 import com.ads.adsmodule.ads.utils.AdsConstants.isShowingInter
 import com.ads.adsmodule.ads.utils.AdsConstants.mCounter
@@ -14,7 +15,6 @@ import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
-
 
 
 object InterstitialAdHelper {
@@ -35,6 +35,12 @@ object InterstitialAdHelper {
     fun preloadAd(context: Activity, slot: InterstitialSlot, adId: String) {
         if (isPremium() || adId.isEmpty()) {
             adCallback?.invoke(slot, "skipped_premium_or_empty_id")
+            return
+        }
+
+
+        if (appOpenIsShown) {
+            appOpenIsShown = false
             return
         }
 
@@ -113,6 +119,13 @@ object InterstitialAdHelper {
             return
         }
 
+        if (appOpenIsShown) {
+            appOpenIsShown = false
+            onDismiss()
+            return
+        }
+
+
         mCounter++
         if (mCounter < counter) {
             adCallback?.invoke(slot, "skipped_counter $mCounter/$counter")
@@ -157,7 +170,7 @@ object InterstitialAdHelper {
                     activity.dismissLoading()
                     adCallback?.invoke(slot, "loaded_on_demand")
                     setupCallbacks(slot, ad, onDismiss)
-                    if (isAppInForeground){
+                    if (isAppInForeground) {
                         ad.show(activity)
                     }
                 }
@@ -190,7 +203,9 @@ object InterstitialAdHelper {
             override fun onAdFailedToShowFullScreenContent(error: AdError) {
                 isShowingInter = false
                 adCallback?.invoke(slot, "failed_to_show: ${error.message}")
-                interstitialAds[slot] = null
+                if (isAppInForeground) {
+                    interstitialAds[slot] = null
+                }
                 onDismiss?.invoke()
             }
         }

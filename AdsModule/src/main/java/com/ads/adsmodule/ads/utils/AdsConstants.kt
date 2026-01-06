@@ -3,7 +3,7 @@ package com.ads.adsmodule.ads.utils
 object AdsConstants {
     var isShowingInter = false // handling interstitial and app_open
 
-    var fragmentValidForAppOpenAd = true   // load/show app open into your desire location
+    var fragmentValidForAppOpenAd = false   // load/show app open into your desire location
 
     var mCounter = 0 //interstitial ad counter
 

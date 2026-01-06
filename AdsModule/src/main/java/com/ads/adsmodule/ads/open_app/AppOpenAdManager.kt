@@ -8,6 +8,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.ads.adsmodule.ads.utils.AdsConstants
 import com.ads.adsmodule.ads.utils.AdsConstants.appOpenIsShown
+import com.ads.adsmodule.ads.utils.AdsConstants.isAppInForeground
 import com.ads.adsmodule.ads.utils.isPremium
 import com.ads.adsmodule.ads.utils.isWindowAttached
 import com.ads.adsmodule.ads.utils.logD
@@ -168,6 +169,20 @@ class AppOpenAdManager(
         }
     }
 
+    override fun onStop(owner: LifecycleOwner) {
+        super.onStop(owner)
+        logD("AppOpenAdManager", "onStop")
+        isAppInForeground=false
+
+    }
+
+    override fun onResume(owner: LifecycleOwner) {
+        super.onResume(owner)
+        logD("AppOpenAdManager", "onResume")
+        isAppInForeground=true
+
+    }
+
     private fun createFullScreenCallback(
         slot: AppOpenSlot,
         onDismissed: () -> Unit
@@ -237,12 +252,15 @@ class AppOpenAdManager(
 
     override fun onActivityResumed(activity: Activity) {
         currentActivity = activity
+        logD("AppOpenAdManager", "onActivityResumed")
 
 
     }
 
     override fun onActivityPaused(activity: Activity) {}
     override fun onActivityStopped(activity: Activity) {
+
+        logD("AppOpenAdManager", "onActivityStopped")
 
     }
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
