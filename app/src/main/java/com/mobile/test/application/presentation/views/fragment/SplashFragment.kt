@@ -85,32 +85,22 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
             adUnitId = bannerSplashId,
             binding.shimmerLayout.root
         ) { slot, status ->
-            Log.d("BannerAd", "[$slot] Status: $status")
-
+            logD("BannerAd", "[$slot] Status: $status")
             when (status) {
-                AdsStates.LOADED -> {
-
-                }
-
                 AdsStates.FAILED_TO_LOAD -> {
                     showGetStartedButton()
-
                 }
-
                 AdsStates.AD_IMPRESSION -> {
                     showGetStartedButton()
                 }
-
                 else -> {
-
                 }
-
             }
         }
     }
 
     private fun showGetStartedButton() {
-        binding.getStarted.beVisible()
+      //  binding.getStarted.beVisible()
         binding.textView.beGone()
         binding.progressBar.beGone()
     }
