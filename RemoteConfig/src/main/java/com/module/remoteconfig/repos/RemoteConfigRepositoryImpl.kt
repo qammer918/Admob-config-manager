@@ -42,36 +42,7 @@ class RemoteConfigRepositoryImpl @Inject constructor(
      * SINGLE JSON CONFIG
      * =========================
      */
-    override suspend fun getRemoteResponse() {
-        // 1️⃣ Apply cached config immediately (if exists)
-        applyCachedConfig()
-        try {
-            setDefaultIds()
-            configureFetchInterval()
-            remoteConfig.fetchAndActivate().await()
-
-            val key = if (BuildConfig.DEBUG) "test_json" else "prod_json"
-
-            val responseJson = remoteConfig.getString(key)
-            if (responseJson.isBlank()) return
-
-            // 2️⃣ Save + Apply fresh config
-            adConfigPrefs.saveAdConfig(responseJson)
-
-            val remoteResponse =
-                gson.fromJson(responseJson, RemoteConfigResponse::class.java)
-
-            Log.d("TAG-->>", "getRemoteResponse(): $remoteResponse")
-            applyAdConfig(remoteResponse)
-
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-
-    override suspend fun getRemoteResponsee(): RemoteConfigSource {
+    override suspend fun getRemoteResponse(): RemoteConfigSource {
         try {
             configureFetchInterval()
 

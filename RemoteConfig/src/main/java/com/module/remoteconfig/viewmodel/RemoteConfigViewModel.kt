@@ -19,7 +19,7 @@ class RemoteConfigViewModel @Inject constructor(private var remoteConfigReposito
 
     fun fetchRemoteConfig(onResponse: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            when (remoteConfigRepository.getRemoteResponsee()) {
+            when (remoteConfigRepository.getRemoteResponse()) {
                 RemoteConfigSource.Remote -> {
                     //for events
                     Log.d("RemoteConfigSource-->>", "Using latest remote config")

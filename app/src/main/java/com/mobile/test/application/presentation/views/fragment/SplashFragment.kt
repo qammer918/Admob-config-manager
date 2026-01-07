@@ -135,7 +135,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
         val allLoaded = application?.appOpenAdManager?.appOpenAds[AppOpenSlot.SPLASH] != null
         val allFailed = application?.appOpenAdManager?.loadFailedMap[AppOpenSlot.SPLASH]
         Log.d("TAG->", "onTickOut:$millisUntilFinished ")
-        if ((allLoaded) || allFailed == true) {
+        if (allLoaded || allFailed == true) {
             cancelCountDownTimer()
             Log.d("TAG->", "onTickIn:$millisUntilFinished ")
             application?.appOpenAdManager?.showAdIfAvailable(AppOpenSlot.SPLASH) {
