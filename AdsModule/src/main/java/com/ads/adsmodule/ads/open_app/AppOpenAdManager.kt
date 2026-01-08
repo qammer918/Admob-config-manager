@@ -195,8 +195,6 @@ class AppOpenAdManager(
         }
 
         override fun onAdDismissedFullScreenContent() {
-//            currentActivity?.dismissAppOpenLoading()
-
             dialogHostActivity?.let { host ->
                 if (!host.isFinishing && !host.isDestroyed) {
                     host.safeDismissAppOpenLoading()
@@ -221,7 +219,9 @@ class AppOpenAdManager(
                 }
             }
             dialogHostActivity = null
-            appOpenAds[slot] = null
+            if (isAppInForeground){
+                appOpenAds[slot] = null
+            }
             isShowingMap[slot] = false
             appOpenIsShown = false
             onAdStatus?.invoke(slot, "failed_to_show")
@@ -259,8 +259,6 @@ class AppOpenAdManager(
 
     override fun onActivityPaused(activity: Activity) {}
     override fun onActivityStopped(activity: Activity) {
-
-        logD("AppOpenAdManager", "onActivityStopped")
 
     }
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}

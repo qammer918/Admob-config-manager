@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
+import com.module.remoteconfig.utils.logD
 import dagger.hilt.android.lifecycle.HiltViewModel
 
 @HiltViewModel
@@ -22,21 +23,21 @@ class RemoteConfigViewModel @Inject constructor(private var remoteConfigReposito
             when (remoteConfigRepository.getRemoteResponse()) {
                 RemoteConfigSource.Remote -> {
                     //for events
-                    Log.d("RemoteConfigSource-->>", "Using latest remote config")
+                    logD("RemoteConfigSource-->>", "Using latest remote config")
                     withContext(Dispatchers.Main) {
                         onResponse.invoke()
                     }
                 }
 
                 RemoteConfigSource.Cache -> {
-                    Log.d("RemoteConfigSource-->>", "Using cached config")
+                    logD("RemoteConfigSource-->>", "Using cached config")
                     withContext(Dispatchers.Main) {
                         onResponse.invoke()
                     }
                 }
 
                 RemoteConfigSource.Default -> {
-                    Log.d("RemoteConfigSource-->>", "Using default IDs")
+                    logD("RemoteConfigSource-->>", "Using default IDs")
                     withContext(Dispatchers.Main) {
                         onResponse.invoke()
                     }

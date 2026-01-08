@@ -31,14 +31,12 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
     private var splashTimeInterval = 1000L
     private var splashAdTimer: CountDownTimer? = null
     private val application: MyApplication?
-        get() = activity?.application as? MyApplication
-
+     get() = activity?.application as? MyApplication
     private val remoteConfigViewModel: RemoteConfigViewModel by viewModels()
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.apply {
+        safeBinding?.apply {
             loadAdOrContinue()
             application?.appOpenAdManager?.onAdStatus = { slot, status ->
                 logD("AppOpenStatus", "$status:$slot")
@@ -100,7 +98,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
     }
 
     private fun showGetStartedButton() {
-      //  binding.getStarted.beVisible()
+        binding.getStarted.beVisible()
         binding.textView.beGone()
         binding.progressBar.beGone()
     }
@@ -118,7 +116,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
     private fun freeUserTimer() {
         splashAdTimer = object : CountDownTimer(splashTime, splashTimeInterval) {
             override fun onTick(millisUntilFinished: Long) {
-                Log.d("TAG->", "onTick:$millisUntilFinished ")
+                logD("TAG->", "onTick:$millisUntilFinished ")
                 showLoadedAd(millisUntilFinished)
             }
 
@@ -134,10 +132,10 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
     private fun showLoadedAd(millisUntilFinished: Long) {
         val allLoaded = application?.appOpenAdManager?.appOpenAds[AppOpenSlot.SPLASH] != null
         val allFailed = application?.appOpenAdManager?.loadFailedMap[AppOpenSlot.SPLASH]
-        Log.d("TAG->", "onTickOut:$millisUntilFinished ")
+        logD("TAG->", "onTickOut:$millisUntilFinished ")
         if (allLoaded || allFailed == true) {
             cancelCountDownTimer()
-            Log.d("TAG->", "onTickIn:$millisUntilFinished ")
+            logD("TAG->", "onTickIn:$millisUntilFinished ")
             application?.appOpenAdManager?.showAdIfAvailable(AppOpenSlot.SPLASH) {
                 findNavController().navigate(R.id.action_SplashFragment_to_UserListFragment)
             }

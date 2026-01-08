@@ -3,6 +3,7 @@ package com.mobile.test.application.core
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import com.ads.adsmodule.ads.utils.logD
 import com.google.android.gms.ads.MobileAds
 import com.google.android.ump.ConsentForm
 import com.google.android.ump.ConsentInformation
@@ -37,7 +38,7 @@ object UnifiedConsentManager {
         onConsentGatheringCompleteListener: OnConsentGatheringCompleteListener
     ) {
         if (!::consentInformation.isInitialized) {
-            Log.e(
+            logD(
                 "ConsentManager",
                 "❌ You must call initialize(context) before using gatherConsentAndInitialize()"
             )
@@ -58,12 +59,12 @@ object UnifiedConsentManager {
                                 handleConsentResult(activity)
                                 // ✅ Automatically initialize ads after consent
                                 if (canRequestAds) {
-                                    initializeMobileAds(activity){
+                                    initializeMobileAds(activity) {
                                         onConsentGatheringCompleteListener.consentGatheringComplete(
                                             formError
                                         )
                                     }
-                                }else{
+                                } else {
                                     onConsentGatheringCompleteListener.consentGatheringComplete(
                                         formError
                                     )
@@ -101,7 +102,7 @@ object UnifiedConsentManager {
                 consentMap[FirebaseAnalytics.ConsentType.AD_PERSONALIZATION] =
                     FirebaseAnalytics.ConsentStatus.GRANTED
 
-                Log.d("ConsentManager", "Consent OBTAINED -> GRANTED")
+                logD("ConsentManager", "Consent OBTAINED -> GRANTED")
             }
 
             ConsentInformation.ConsentStatus.REQUIRED -> {
@@ -114,7 +115,7 @@ object UnifiedConsentManager {
                 consentMap[FirebaseAnalytics.ConsentType.AD_PERSONALIZATION] =
                     FirebaseAnalytics.ConsentStatus.DENIED
 
-                Log.d("ConsentManager", "Consent REQUIRED -> DENIED")
+                logD("ConsentManager", "Consent REQUIRED -> DENIED")
             }
 
             ConsentInformation.ConsentStatus.NOT_REQUIRED -> {
@@ -127,7 +128,7 @@ object UnifiedConsentManager {
                 consentMap[FirebaseAnalytics.ConsentType.AD_PERSONALIZATION] =
                     FirebaseAnalytics.ConsentStatus.GRANTED
 
-                Log.d("ConsentManager", "Consent NOT_REQUIRED -> default GRANTED")
+                logD("ConsentManager", "Consent NOT_REQUIRED -> default GRANTED")
             }
 
             else -> {
@@ -140,7 +141,7 @@ object UnifiedConsentManager {
                 consentMap[FirebaseAnalytics.ConsentType.AD_PERSONALIZATION] =
                     FirebaseAnalytics.ConsentStatus.DENIED
 
-                Log.d("ConsentManager", "Consent UNKNOWN -> DENIED fallback")
+                logD("ConsentManager", "Consent UNKNOWN -> DENIED fallback")
             }
         }
 
@@ -152,16 +153,16 @@ object UnifiedConsentManager {
     /**
      * Initializes the Mobile Ads SDK safely.
      */
-    private fun initializeMobileAds(activity: Activity,onSuccess:(()-> Unit)) {
+    private fun initializeMobileAds(activity: Activity, onSuccess: (() -> Unit)) {
         try {
             CoroutineScope(Dispatchers.Default).launch {
                 MobileAds.initialize(activity) {
-                    Log.d("AdsInit", "✅ Mobile Ads initialized successfully")
+                    logD("AdsInit", "✅ Mobile Ads initialized successfully")
                     onSuccess.invoke()
                 }
             }
         } catch (e: Exception) {
-            Log.d("AdsInit", "❌ Failed to initialize Mobile Ads: ${e.message}")
+            logD("AdsInit", "❌ Failed to initialize Mobile Ads: ${e.message}")
             onSuccess.invoke()
         }
     }
@@ -173,8 +174,6 @@ object UnifiedConsentManager {
         UserMessagingPlatform.showPrivacyOptionsForm(activity, onConsentFormDismissedListener)
     }
 }
-
-
 
 
 /*
@@ -239,7 +238,7 @@ object UnifiedConsentManager {
                 val canRequestAds = consentInformation?.canRequestAds() ?: false
                 val consentStatus = consentInformation?.consentStatus
 
-                Log.d(TAG, "Consent status: $consentStatus, canRequestAds=$canRequestAds")
+                logD(TAG, "Consent status: $consentStatus, canRequestAds=$canRequestAds")
 
                 when (consentStatus) {
                     ConsentInformation.ConsentStatus.OBTAINED -> finishConsent(activity, true, onComplete)
@@ -255,7 +254,7 @@ object UnifiedConsentManager {
 
     // ✅ Apply results, update mediation SDKs & Firebase
     private fun finishConsent(activity: Activity, granted: Boolean, onComplete: (Boolean) -> Unit) {
-        Log.d(TAG, "Finishing consent: granted=$granted")
+        logD(TAG, "Finishing consent: granted=$granted")
 
         // 🔹 1. Initialize AdMob SDK
         if (granted) initMobileAds(activity.applicationContext)
@@ -279,7 +278,7 @@ object UnifiedConsentManager {
             try {
                 MobileAds.initialize(context)
                 isMobileAdsInitialized = true
-                Log.d(TAG, "MobileAds initialized")
+                logD(TAG, "MobileAds initialized")
             } catch (e: Exception) {
                 Log.e(TAG, "MobileAds init failed: ${e.message}")
             }
@@ -303,7 +302,7 @@ object UnifiedConsentManager {
             map[FirebaseAnalytics.ConsentType.AD_PERSONALIZATION] = status
 
             FirebaseAnalytics.getInstance(context).setConsent(map)
-            Log.d(TAG, "Firebase consent set to: $status")
+            logD(TAG, "Firebase consent set to: $status")
         } catch (e: Exception) {
             Log.e(TAG, "Failed to update Firebase consent: ${e.message}")
         }
@@ -324,7 +323,7 @@ object UnifiedConsentManager {
 
                 // InMobi
 
-                Log.d(TAG, "Mediation SDKs updated with consent=$granted")
+                logD(TAG, "Mediation SDKs updated with consent=$granted")
             } catch (e: Exception) {
                 Log.e(TAG, "Error updating mediation SDKs: ${e.message}")
             }

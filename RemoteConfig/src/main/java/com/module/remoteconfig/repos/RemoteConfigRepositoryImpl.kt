@@ -26,6 +26,7 @@ import com.module.remoteconfig.states.RemoteConfigSource
 import com.module.remoteconfig.utils.Constants.testingString
 import com.module.remoteconfig.utils.Constants.testingString2
 import com.module.remoteconfig.utils.Constants.versionNumber
+import com.module.remoteconfig.utils.logD
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -106,7 +107,7 @@ class RemoteConfigRepositoryImpl @Inject constructor(
                 val adIds =
                     gson.fromJson(responseJson, RemoteConfigResponse::class.java)
 
-                Log.d("TAG-->>", "getRemoteResponse($key): $adIds")
+                logD("TAG-->>", "getRemoteResponse($key): $adIds")
 
                 // Apply each config safely
                 applyAdConfig(adIds)
@@ -129,7 +130,7 @@ class RemoteConfigRepositoryImpl @Inject constructor(
             val cachedAdIds =
                 gson.fromJson(cachedJson, RemoteConfigResponse::class.java)
 
-            Log.d("RemoteConfig", "Loaded ad config from SharedPreferences")
+            logD("RemoteConfig", "Loaded ad config from SharedPreferences")
             applyAdConfig(cachedAdIds)
 
         } catch (e: Exception) {
@@ -143,7 +144,7 @@ class RemoteConfigRepositoryImpl @Inject constructor(
      * =========================
      */
     override fun setDefaultIds() {
-        Log.d("TAG-->>", "Default ad IDs applied")
+        logD("TAG-->>", "Default ad IDs applied")
 
         // XML fallback
         appOpenSplashId = context.getString(R.string.app_open_splash_id)
@@ -194,7 +195,7 @@ class RemoteConfigRepositoryImpl @Inject constructor(
         testingString2 = getValidStringValue(testString2)
         versionNumber = getValidStringValue(version)
 
-        Log.d(
+        logD(
             "RemoteConfig", """
             🎯 Ad Config Applied:
             appOpenSplashId = $appOpenSplashId

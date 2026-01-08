@@ -126,6 +126,9 @@ object InterstitialAdHelper {
         }
 
 
+
+
+
         mCounter++
         if (mCounter < counter) {
             adCallback?.invoke(slot, "skipped_counter $mCounter/$counter")

@@ -11,6 +11,7 @@ import com.ads.adsmodule.ads.utils.beGone
 import com.ads.adsmodule.ads.utils.beInvisible
 import com.ads.adsmodule.ads.utils.beVisible
 import com.ads.adsmodule.ads.utils.isPremium
+import com.ads.adsmodule.ads.utils.logD
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
@@ -57,18 +58,18 @@ object NativeAdManager {
         showLoadedAd(slot, activity, adLayoutId, adContainer, showMedia)
 
         if (isLoadingMap[slot] == true) {
-            Log.d("NativeAdManager", "$slot: already loading.")
+            logD("NativeAdManager", "$slot: already loading.")
             return
         }
 
         isLoadingMap[slot] = true
-        Log.d("NativeAdManager", "$slot: starting ad load...")
+        logD("NativeAdManager", "$slot: starting ad load...")
 
         val existingAd = nativeAds[slot]
         val isShown = isAdShownMap[slot] == true
 
         if (!isShown && existingAd != null) {
-            Log.d("NativeAdManager", "$slot: reusing cached ad.")
+            logD("NativeAdManager", "$slot: reusing cached ad.")
             showAdView(activity, adLayoutId, adContainer, existingAd, showMedia)
             isLoadingMap[slot] = false
             return
@@ -97,12 +98,12 @@ object NativeAdManager {
                     isLoadingMap[slot] = false
                     isAdShownMap[slot] = false
                     onAdLoadResult(slot, true)
-                    Log.d("NativeAdManager", "$slot: ad loaded successfully.")
+                    logD("NativeAdManager", "$slot: ad loaded successfully.")
                 }
 
                 override fun onAdImpression() {
                     isAdShownMap[slot] = true
-                    Log.d("NativeAdManager", "$slot: impression recorded.")
+                    logD("NativeAdManager", "$slot: impression recorded.")
                 }
 
                 override fun onAdFailedToLoad(error: LoadAdError) {
