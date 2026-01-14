@@ -42,6 +42,10 @@ class AppOpenAdManager(
     init {
         application.registerActivityLifecycleCallbacks(this)
         ProcessLifecycleOwner.Companion.get().lifecycle.addObserver(this)
+        onAdStatus = { slot, status ->
+            logD("AppOpenStatus", "$status:$slot")
+        }
+
     }
 
 

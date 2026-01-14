@@ -38,9 +38,6 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
         super.onViewCreated(view, savedInstanceState)
         safeBinding?.apply {
             loadAdOrContinue()
-            application?.appOpenAdManager?.onAdStatus = { slot, status ->
-                logD("AppOpenStatus", "$status:$slot")
-            }
 
             getStarted.click {
              checkAndNavigate()

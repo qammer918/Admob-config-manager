@@ -12,6 +12,7 @@ import com.ads.adsmodule.ads.utils.beInvisible
 import com.ads.adsmodule.ads.utils.beVisible
 import com.ads.adsmodule.ads.utils.isPremium
 import com.ads.adsmodule.ads.utils.logD
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
@@ -43,11 +44,12 @@ object NativeAdManager {
         adLayoutId: Int,
         adContainer: FrameLayout?,
         adUnitId: String,
-        shimmerView: View?,
+        shimmerView: ShimmerFrameLayout?,
         showMedia: Boolean = false
     ) {
 
         if (isPremium() || adUnitId.isEmpty()) {
+            shimmerView?.stopShimmer()
             shimmerView?.beGone()
             adContainer?.beGone()
             return
@@ -94,6 +96,7 @@ object NativeAdManager {
             .withAdListener(object : AdListener() {
                 override fun onAdLoaded() {
                     shimmerView?.beInvisible()
+                    shimmerView?.stopShimmer()
                     adContainer?.beVisible()
                     isLoadingMap[slot] = false
                     isAdShownMap[slot] = false
@@ -111,6 +114,7 @@ object NativeAdManager {
                     Log.e("NativeAdManager", "$slot: failed to load — $msg")
 
                     destroyAd(slot)
+                    shimmerView?.stopShimmer()
                     shimmerView?.beGone()
                     adContainer?.beGone()
                     isLoadingMap[slot] = false

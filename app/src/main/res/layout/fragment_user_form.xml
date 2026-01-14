@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:padding="8dp"
     tools:context=".presentation.views.fragment.UserFormFragment">
 
     <LinearLayout
@@ -101,6 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:paddingHorizontal="4dp"
             android:weightSum="2">
 
             <com.google.android.material.button.MaterialButton
@@ -216,8 +216,6 @@
                 layout="@layout/native_inline_2_shimmer" />
 
         </FrameLayout>
-
-
 
 
     </LinearLayout>

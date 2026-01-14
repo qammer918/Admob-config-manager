@@ -1,6 +1,7 @@
 package com.ads.adsmodule.ads.interstitial
 
 import android.app.Activity
+import com.ads.adsmodule.ads.nativeAd.NativeAdSlot
 import com.ads.adsmodule.ads.utils.AdsConstants.appOpenIsShown
 import com.ads.adsmodule.ads.utils.AdsConstants.isAppInForeground
 import com.ads.adsmodule.ads.utils.AdsConstants.isShowingInter
@@ -23,6 +24,9 @@ object InterstitialAdHelper {
     private val isLoadingMap = mutableMapOf<InterstitialSlot, Boolean>()
 
     private var adCallback: ((InterstitialSlot, String) -> Unit)? = null
+
+    private val isAdShownMap = mutableMapOf<InterstitialSlot, Boolean>()
+
 
     fun setAdCallback(callback: (InterstitialSlot, String) -> Unit) {
         adCallback = callback
@@ -194,6 +198,7 @@ object InterstitialAdHelper {
             override fun onAdShowedFullScreenContent() {
                 adCallback?.invoke(slot, "shown")
                 isShowingInter = true
+                isAdShownMap[slot] = true
             }
 
             override fun onAdDismissedFullScreenContent() {
@@ -206,6 +211,7 @@ object InterstitialAdHelper {
             override fun onAdFailedToShowFullScreenContent(error: AdError) {
                 isShowingInter = false
                 adCallback?.invoke(slot, "failed_to_show: ${error.message}")
+                isAdShownMap[slot] = false
                 if (isAppInForeground) {
                     interstitialAds[slot] = null
                 }
@@ -218,8 +224,11 @@ object InterstitialAdHelper {
     // 🔹 DESTROY HELPERS
     // ================================
     fun destroy(slot: InterstitialSlot) {
-        interstitialAds.remove(slot)
-        adCallback?.invoke(slot, "destroyed")
+        if (interstitialAds[slot] != null) {
+            interstitialAds.remove(slot)
+            adCallback?.invoke(slot, "destroyed")
+
+        }
     }
 
     fun destroyAll() {

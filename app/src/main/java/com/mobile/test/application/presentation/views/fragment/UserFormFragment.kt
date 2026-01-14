@@ -8,13 +8,13 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.ads.adsmodule.R
 import com.ads.adsmodule.ads.bannerad.BannerAdManager
 import com.ads.adsmodule.ads.bannerad.BannerSlot
 import com.ads.adsmodule.ads.interstitial.InterstitialAdHelper
 import com.ads.adsmodule.ads.interstitial.InterstitialSlot
 import com.ads.adsmodule.ads.nativeAd.NativeAdManager
 import com.ads.adsmodule.ads.nativeAd.NativeAdSlot
-import com.mobile.test.application.R
 import com.mobile.test.application.core.click
 import com.mobile.test.application.core.singleClick
 import com.mobile.test.application.databinding.FragmentUserFormBinding
@@ -44,7 +44,7 @@ class UserFormFragment : BaseFragment<FragmentUserFormBinding>(FragmentUserFormB
         NativeAdManager.loadNativeAd(
             slot = NativeAdSlot.SETTINGS,
             activity = requireActivity(),
-            adLayoutId = R.layout.native_language_layout,
+            adLayoutId = R.layout.native_small_layout,
             adContainer = binding.frameInlineNative,
             adUnitId = "ca-app-pub-3940256099942544/2247696110",
             shimmerView = binding.nativeInline2Shimmer.root,
@@ -55,7 +55,7 @@ class UserFormFragment : BaseFragment<FragmentUserFormBinding>(FragmentUserFormB
         NativeAdManager.loadNativeAd(
             slot = NativeAdSlot.ABOUT,
             activity = requireActivity(),
-            adLayoutId = R.layout.native_language_layout,
+            adLayoutId = R.layout.native_small_layout,
             adContainer = binding.frameInlineNative2,
             adUnitId = "ca-app-pub-3940256099942544/2247696110",
             shimmerView = binding.nativeInline2Shimmer2.root,
@@ -66,7 +66,7 @@ class UserFormFragment : BaseFragment<FragmentUserFormBinding>(FragmentUserFormB
         NativeAdManager.loadNativeAd(
             slot = NativeAdSlot.MENU,
             activity = requireActivity(),
-            adLayoutId = R.layout.native_language_layout,
+            adLayoutId = R.layout.native_small_layout,
             adContainer = binding.frameInlineNative3,
             adUnitId = "ca-app-pub-3940256099942544/2247696110",
             shimmerView = binding.nativeInline2Shimmer3.root,
@@ -77,7 +77,7 @@ class UserFormFragment : BaseFragment<FragmentUserFormBinding>(FragmentUserFormB
         NativeAdManager.loadNativeAd(
             slot = NativeAdSlot.NEW,
             activity = requireActivity(),
-            adLayoutId = R.layout.native_language_layout,
+            adLayoutId = R.layout.native_small_layout,
             adContainer = binding.frameInlineNative4,
             adUnitId = "ca-app-pub-3940256099942544/2247696110",
             shimmerView = binding.nativeInline2Shimmer4.root,
@@ -88,7 +88,7 @@ class UserFormFragment : BaseFragment<FragmentUserFormBinding>(FragmentUserFormB
         NativeAdManager.loadNativeAd(
             slot = NativeAdSlot.NEW2,
             activity = requireActivity(),
-            adLayoutId = R.layout.native_language_layout,
+            adLayoutId = R.layout.native_small_layout,
             adContainer = binding.frameInlineNative5,
             adUnitId = "ca-app-pub-3940256099942544/2247696110",
             shimmerView = binding.nativeInline2Shimmer5.root,

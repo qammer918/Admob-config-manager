@@ -47,7 +47,7 @@ class UserListFragment : BaseFragment<FragmentUserListBinding>(FragmentUserListB
         fragmentValidForAppOpenAd=true
 
         val application = activity?.applicationContext as? MyApplication
-        application?.appOpenAdManager?.fetchAd(AppOpenSlot.MAIN,appOpenInAppId)
+//        application?.appOpenAdManager?.fetchAd(AppOpenSlot.MAIN,appOpenInAppId)
 
         InterstitialAdHelper.setAdCallback { slot, status ->
             Log.d("AdStatus", "$slot → $status")
@@ -83,7 +83,7 @@ class UserListFragment : BaseFragment<FragmentUserListBinding>(FragmentUserListB
         NativeAdManager.loadNativeAd(
             slot = NativeAdSlot.HOME,
             activity = requireActivity(),
-            adLayoutId = R.layout.native_language_layout,
+            adLayoutId = com.ads.adsmodule.R.layout.native_large_layout,
             adContainer = binding.frameInlineNative,
             adUnitId = nativeOnBoardingId,
             shimmerView = binding.nativeInline2Shimmer.root,

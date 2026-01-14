@@ -56,5 +56,7 @@ dependencies {
     implementation(libs.play.services.ads)
     implementation(libs.sdp.unit)
     implementation(project(":RemoteConfig"))
+    implementation(libs.shimmer)
+
 
 }

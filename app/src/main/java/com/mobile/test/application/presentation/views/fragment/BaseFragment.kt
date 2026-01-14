@@ -23,7 +23,6 @@ abstract class BaseFragment<VB : ViewBinding>(
         _binding = bindingInflater.invoke(inflater, container, false)
         return binding.root
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

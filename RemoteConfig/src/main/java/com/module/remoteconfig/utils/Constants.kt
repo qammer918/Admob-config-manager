@@ -11,7 +11,6 @@ object Constants {
     var nativeFunctionsId = ""
     var nativeHomeId = ""
     var nativeLanguageId = ""
-
     var showMyButton = false
     var testingString = ""
     var testingString2 = ""
