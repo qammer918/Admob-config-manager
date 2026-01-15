@@ -129,10 +129,6 @@ object InterstitialAdHelper {
             return
         }
 
-
-
-
-
         mCounter++
         if (mCounter < counter) {
             adCallback?.invoke(slot, "skipped_counter $mCounter/$counter")
@@ -146,6 +142,7 @@ object InterstitialAdHelper {
         isShowingInter = true
         val cached = interstitialAds[slot]
         if (cached != null) {
+            setupCallbacks(slot, cached, onDismiss)
             adCallback?.invoke(slot, "using_cached_ad")
             cached.show(activity)
             return
@@ -224,11 +221,9 @@ object InterstitialAdHelper {
     // 🔹 DESTROY HELPERS
     // ================================
     fun destroy(slot: InterstitialSlot) {
-        if (interstitialAds[slot] != null) {
             interstitialAds.remove(slot)
+            isAdShownMap[slot] = false
             adCallback?.invoke(slot, "destroyed")
-
-        }
     }
 
     fun destroyAll() {

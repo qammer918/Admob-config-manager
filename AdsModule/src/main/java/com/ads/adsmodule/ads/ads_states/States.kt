@@ -6,7 +6,8 @@ enum class AdsStates {
     AD_IMPRESSION,
     NO_AD_AVAILABLE,
     AD_DISMISSED,
-    LOADING
+    LOADING,
+    DESTROY
 
 
 

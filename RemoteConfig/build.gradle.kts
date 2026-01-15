@@ -52,7 +52,7 @@ android {
             resValue("string", "native_onboarding_id2", "ca-app-pub-3940256099942544/2247696110")
             resValue("string", "native_exit_id", "ca-app-pub-3940256099942544/2247696110")
             resValue("string", "native_functions_id", "ca-app-pub-3940256099942544/2247696110")
-            resValue("string", "native_home_id", "ca-app-pub-3940256099942544/2247696110")
+            resValue("string", "native_home_id", "ca-app-pub-3940256099942544/1044960115")
             resValue("string", "native_language_id", "ca-app-pub-3940256099942544/2247696110")
 
 

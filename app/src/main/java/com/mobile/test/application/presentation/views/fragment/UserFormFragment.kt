@@ -57,7 +57,7 @@ class UserFormFragment : BaseFragment<FragmentUserFormBinding>(FragmentUserFormB
             activity = requireActivity(),
             adLayoutId = R.layout.native_small_layout,
             adContainer = binding.frameInlineNative2,
-            adUnitId = "ca-app-pub-3940256099942544/2247696110",
+            adUnitId = "ca-app-pub-3940256099942544/1044960115",
             shimmerView = binding.nativeInline2Shimmer2.root,
             showMedia = true
         )
@@ -68,7 +68,7 @@ class UserFormFragment : BaseFragment<FragmentUserFormBinding>(FragmentUserFormB
             activity = requireActivity(),
             adLayoutId = R.layout.native_small_layout,
             adContainer = binding.frameInlineNative3,
-            adUnitId = "ca-app-pub-3940256099942544/2247696110",
+            adUnitId = "ca-app-pub-3940256099942544/1044960115",
             shimmerView = binding.nativeInline2Shimmer3.root,
             showMedia = true
         )
@@ -178,11 +178,6 @@ class UserFormFragment : BaseFragment<FragmentUserFormBinding>(FragmentUserFormB
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-
-
-
-
-
                     InterstitialAdHelper.showOnDemandAd(
                         activity = requireActivity(),
                         slot = InterstitialSlot.EXIT,
@@ -249,6 +244,7 @@ class UserFormFragment : BaseFragment<FragmentUserFormBinding>(FragmentUserFormB
         NativeAdManager.destroyAd(NativeAdSlot.NEW2)
         NativeAdManager.destroyAd(NativeAdSlot.MENU)
         NativeAdManager.destroyAd(NativeAdSlot.ABOUT)
+        BannerAdManager.destroyBanner(BannerSlot.CUSTOM)
 
     }
 

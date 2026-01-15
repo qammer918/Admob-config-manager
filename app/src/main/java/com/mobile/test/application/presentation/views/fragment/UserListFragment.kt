@@ -29,6 +29,7 @@ import com.mobile.test.application.presentation.viewmodel.UserViewModel
 import com.module.remoteconfig.utils.Constants.appOpenInAppId
 import com.module.remoteconfig.utils.Constants.bannerSplashId
 import com.module.remoteconfig.utils.Constants.interstitialFunctionId
+import com.module.remoteconfig.utils.Constants.nativeHomeId
 import com.module.remoteconfig.utils.Constants.nativeOnBoardingId
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -47,7 +48,7 @@ class UserListFragment : BaseFragment<FragmentUserListBinding>(FragmentUserListB
         fragmentValidForAppOpenAd=true
 
         val application = activity?.applicationContext as? MyApplication
-//        application?.appOpenAdManager?.fetchAd(AppOpenSlot.MAIN,appOpenInAppId)
+        application?.appOpenAdManager?.fetchAd(AppOpenSlot.MAIN,appOpenInAppId)
 
         InterstitialAdHelper.setAdCallback { slot, status ->
             Log.d("AdStatus", "$slot → $status")
@@ -85,7 +86,7 @@ class UserListFragment : BaseFragment<FragmentUserListBinding>(FragmentUserListB
             activity = requireActivity(),
             adLayoutId = com.ads.adsmodule.R.layout.native_large_layout,
             adContainer = binding.frameInlineNative,
-            adUnitId = nativeOnBoardingId,
+            adUnitId = nativeHomeId,
             shimmerView = binding.nativeInline2Shimmer.root,
             showMedia = true
         )
@@ -178,7 +179,6 @@ class UserListFragment : BaseFragment<FragmentUserListBinding>(FragmentUserListB
     override fun onDestroyView() {
         super.onDestroyView()
         NativeAdManager.destroyAd(NativeAdSlot.HOME)
-        InterstitialAdHelper.destroy(InterstitialSlot.EXIT)
         BannerAdManager.destroyBanner(BannerSlot.SETTINGS)
     }
 
