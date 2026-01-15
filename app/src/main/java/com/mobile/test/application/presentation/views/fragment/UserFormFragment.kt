@@ -110,7 +110,7 @@ class UserFormFragment : BaseFragment<FragmentUserFormBinding>(FragmentUserFormB
             container = binding.adContainer,
             slot = BannerSlot.CUSTOM,
             adUnitId = bannerSplashId,
-            binding.shimmerLayout.root
+            shimmerView = binding.shimmerLayout.root
         ) { slot, status ->
             Log.d("BannerAd", "[$slot] Status: $status")
         }
@@ -121,7 +121,6 @@ class UserFormFragment : BaseFragment<FragmentUserFormBinding>(FragmentUserFormB
             btnSave.singleClick {
                 saveUser()
             }
-
             btnCancel click {
                 findNavController().navigateUp()
             }
@@ -167,7 +166,7 @@ class UserFormFragment : BaseFragment<FragmentUserFormBinding>(FragmentUserFormB
                     viewModel.insertUser(user)
                 }
 
-                findNavController().navigateUp()
+                findNavController().popBackStack()
             }
         }
     }
@@ -183,7 +182,7 @@ class UserFormFragment : BaseFragment<FragmentUserFormBinding>(FragmentUserFormB
                         slot = InterstitialSlot.EXIT,
                         adId = "ca-app-pub-3940256099942544/1033173712",
                     ) {
-                        findNavController().navigateUp()
+                        findNavController().popBackStack()
                         Log.d("Ad", "Exit ad dismissed")
                     }
 

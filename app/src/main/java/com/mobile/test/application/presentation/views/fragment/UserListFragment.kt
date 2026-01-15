@@ -21,6 +21,7 @@ import com.mobile.test.application.R
 import com.mobile.test.application.app.MyApplication
 import com.mobile.test.application.core.beGone
 import com.mobile.test.application.core.beVisible
+import com.mobile.test.application.core.safeNavigate
 import com.mobile.test.application.core.singleClick
 import com.mobile.test.application.core.snackBar
 import com.mobile.test.application.databinding.FragmentUserListBinding
@@ -101,7 +102,8 @@ class UserListFragment : BaseFragment<FragmentUserListBinding>(FragmentUserListB
             container = binding.adContainer,
             slot = BannerSlot.SETTINGS,
             adUnitId = bannerSplashId,
-            shimmerView = binding.shimmerLayout.root
+            shimmerView = binding.shimmerLayout.root,
+            collapsible = true to "top"
         ) { slot, status ->
             Log.d("BannerAd", "[$slot] Status: $status")
         }
@@ -172,7 +174,8 @@ class UserListFragment : BaseFragment<FragmentUserListBinding>(FragmentUserListB
         val bundle = Bundle().apply {
             putLong("userId", userId)
         }
-        findNavController().navigate(R.id.action_userList_to_userForm, bundle)
+        safeNavigate(R.id.UserFormFragment,bundle)
+
     }
 
 

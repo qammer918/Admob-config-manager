@@ -4,6 +4,9 @@ import android.R
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.SystemClock
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -13,6 +16,9 @@ import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.graphics.toColorInt
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.mobile.test.application.databinding.DialogLoadingBinding
 
@@ -60,9 +66,71 @@ infix fun View.click(click: (View) -> Unit) {
     }
 }
 
-fun isPremium(): Boolean{
-    return false
+
+private var lastNavigationTime = 0L
+fun Fragment.safeNavigate(
+    destinationId: Int,
+    bundle: Bundle? = null,
+    singleTop: Boolean = true,
+    withAnimations: Boolean = true,
+    retryDelay: Long = 200L,       // delay before retry
+    maxRetries: Int = 3             // max retry attempts
+) {
+
+
+    val navController = findNavController()
+    val handler = Handler(Looper.getMainLooper())
+
+    var attempt = 0
+
+    fun tryNavigate() {
+        attempt++
+
+        // 1️⃣ Prevent very fast double navigation
+        val currentTime = System.currentTimeMillis()
+        if (currentTime - lastNavigationTime < 300) return
+        lastNavigationTime = currentTime
+
+        // 2️⃣ Prevent navigating to the same destination
+        if (navController.currentDestination?.id == destinationId) return
+
+
+        // 3️⃣ Build NavOptions
+        val navOptionsBuilder = NavOptions.Builder()
+        if (withAnimations) {
+            navOptionsBuilder
+
+        }
+        if (singleTop) {
+            navOptionsBuilder.setLaunchSingleTop(true)
+        }
+        val navOptions = navOptionsBuilder.build()
+
+        // 4️⃣ Check destination exists in graph
+        if (navController.graph.findNode(destinationId) == null) return
+
+        // 5️⃣ Try navigation with retry
+        try {
+            navController.navigate(destinationId, bundle, navOptions)
+        } catch (e: Exception) {
+            if (attempt <= maxRetries) {
+                handler.postDelayed({ tryNavigate() }, retryDelay)
+            } else {
+                e.printStackTrace() // log final failure
+            }
+        }
+    }
+
+    tryNavigate()
+
+
+
+
 }
+
+//fun isPremium(): Boolean{
+//    return false
+//}
 
 
 

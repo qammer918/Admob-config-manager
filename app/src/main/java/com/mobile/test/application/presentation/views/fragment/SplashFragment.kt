@@ -10,6 +10,7 @@ import com.ads.adsmodule.ads.ads_states.AdsStates
 import com.ads.adsmodule.ads.bannerad.BannerAdManager
 import com.ads.adsmodule.ads.bannerad.BannerSlot
 import com.ads.adsmodule.ads.open_app.AppOpenSlot
+import com.ads.adsmodule.ads.utils.isPremium
 import com.ads.adsmodule.ads.utils.logD
 import com.mobile.test.application.R
 import com.mobile.test.application.app.MyApplication
@@ -18,7 +19,7 @@ import com.mobile.test.application.core.UnifiedConsentManager
 import com.mobile.test.application.core.beGone
 import com.mobile.test.application.core.beVisible
 import com.mobile.test.application.core.click
-import com.mobile.test.application.core.isPremium
+import com.mobile.test.application.core.safeNavigate
 import com.mobile.test.application.databinding.FragmentSplashBinding
 import com.module.remoteconfig.utils.Constants.appOpenSplashId
 import com.module.remoteconfig.utils.Constants.bannerSplashId
@@ -40,7 +41,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
             loadAdOrContinue()
 
             getStarted.click {
-             checkAndNavigate()
+                safeNavigate(R.id.UserListFragment)
             }
         }
     }
@@ -119,7 +120,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
 
             override fun onFinish() {
                 application?.appOpenAdManager?.showAdIfAvailable(AppOpenSlot.SPLASH) {
-                    findNavController().navigate(R.id.action_SplashFragment_to_UserListFragment)
+                    safeNavigate(R.id.UserListFragment)
                 }
             }
         }
@@ -134,7 +135,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
             cancelCountDownTimer()
             logD("TAG->", "onTickIn:$millisUntilFinished ")
             application?.appOpenAdManager?.showAdIfAvailable(AppOpenSlot.SPLASH) {
-                findNavController().navigate(R.id.action_SplashFragment_to_UserListFragment)
+                safeNavigate(R.id.UserListFragment)
             }
         }
     }
@@ -146,8 +147,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
             }
 
             override fun onFinish() {
-                findNavController().navigate(R.id.action_SplashFragment_to_UserListFragment)
-
+                safeNavigate(R.id.UserListFragment)
             }
 
         }
@@ -164,10 +164,6 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
         }
     }
 
-
-    fun checkAndNavigate() {
-        findNavController().navigate(R.id.action_SplashFragment_to_UserListFragment)
-    }
 
     private fun handleTimerOnPause() {
         cancelCountDownTimer()

@@ -2,6 +2,7 @@ package com.ads.adsmodule.ads.bannerad
 
 import android.app.Activity
 import android.os.Build
+import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
 import android.widget.FrameLayout
@@ -9,16 +10,18 @@ import androidx.core.view.isNotEmpty
 import com.ads.adsmodule.ads.ads_states.AdsStates
 import com.ads.adsmodule.ads.utils.isPremium
 import com.ads.adsmodule.ads.utils.logD
+import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
+import kotlin.jvm.java
 
 
 object BannerAdManager {
 
-     val bannerAds = mutableMapOf<BannerSlot, AdView>()
+    val bannerAds = mutableMapOf<BannerSlot, AdView>()
     private val isLoadingMap = mutableMapOf<BannerSlot, Boolean>()
     private val adCallbacks = mutableMapOf<BannerSlot, (BannerSlot, AdsStates) -> Unit>()
 
@@ -51,10 +54,12 @@ object BannerAdManager {
         slot: BannerSlot,
         adUnitId: String,
         shimmerView: View? = null,
+        collapsible: Pair<Boolean, String>? = null,
         adCallback: (BannerSlot, AdsStates) -> Unit
     ) {
         if (isPremium() || adUnitId.isEmpty()) {
             shimmerView?.visibility = View.GONE
+            container.visibility = View.GONE
             container.removeAllViews()
             return
         }
@@ -72,11 +77,10 @@ object BannerAdManager {
         }
 
 
-
         val existingAd = bannerAds[slot]
         val isShown = isAdShownMap[slot] == true
 
-        logD("BannerAdManager","isSown:$isShown+$slot+ExistingAd:$existingAd+$slot")
+        logD("BannerAdManager", "isSown:$isShown+$slot+ExistingAd:$existingAd+$slot")
 
         if (!isShown && existingAd != null) {
             if (existingAd.parent != null) {
@@ -90,28 +94,17 @@ object BannerAdManager {
         }
 
 
-/*
-        bannerAds[slot]?.let { cachedAd ->
-            if (cachedAd.parent != null) {
-                (cachedAd.parent as? FrameLayout)?.removeAllViews()
-            }
-            shimmerView?.visibility = View.GONE
-            container.removeAllViews()
-            container.addView(cachedAd)
-            return
-        }*/
-
         shimmerView?.visibility = View.VISIBLE
         adCallback(slot, AdsStates.LOADING)
         isLoadingMap[slot] = true
-
 
 
         // Destroy previous ad if any
         bannerAds[slot]?.let { oldAd ->
             try {
                 oldAd.destroy()
-            } catch (_: Exception) {}
+            } catch (_: Exception) {
+            }
             container.removeView(oldAd)
         }
         bannerAds.remove(slot)
@@ -123,8 +116,19 @@ object BannerAdManager {
         }
         bannerAds[slot] = adView
         container.addView(adView)
-        adView.loadAd(AdRequest.Builder().build())
 
+        if (collapsible?.first==true) {
+            // ✅ Collapsible extras
+            val extras = Bundle().apply {
+                putString("collapsible", collapsible.second) // "top" or "bottom"
+            }
+            val adRequest = AdRequest.Builder()
+                .addNetworkExtrasBundle(AdMobAdapter::class.java, extras)
+                .build()
+            adView.loadAd(adRequest)
+        } else {
+            adView.loadAd(AdRequest.Builder().build())
+        }
 
         adView.adListener = object : AdListener() {
             override fun onAdLoaded() {
@@ -139,6 +143,8 @@ object BannerAdManager {
                 isLoadingMap[slot] = false
                 isAdShownMap[slot] = false
                 bannerAds.remove(slot)
+                shimmerView?.visibility = View.GONE
+                container.visibility = View.GONE
                 container.removeAllViews()
                 adCallback(slot, AdsStates.FAILED_TO_LOAD)
             }
@@ -167,15 +173,15 @@ object BannerAdManager {
     }
 
     fun destroyBanner(slot: BannerSlot) {
-      if (isAdShownMap[slot]==true){
-          adCallbacks[slot]?.invoke(slot, AdsStates.DESTROY)
-          isAdShownMap[slot]=false
-          bannerAds[slot]?.destroy()
-          bannerAds.remove(slot)
-          isLoadingMap.remove(slot)
-          adCallbacks.remove(slot)
+        if (isAdShownMap[slot] == true) {
+            adCallbacks[slot]?.invoke(slot, AdsStates.DESTROY)
+            isAdShownMap[slot] = false
+            bannerAds[slot]?.destroy()
+            bannerAds.remove(slot)
+            isLoadingMap.remove(slot)
+            adCallbacks.remove(slot)
 
-      }
+        }
     }
 
     // ✅ Destroy all banners (e.g., on app exit)
