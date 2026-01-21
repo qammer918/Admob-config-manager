@@ -28,6 +28,7 @@ import com.module.remoteconfig.utils.Constants.testingString2
 import com.module.remoteconfig.utils.Constants.versionNumber
 import com.module.remoteconfig.utils.logD
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
 
 class RemoteConfigRepositoryImpl @Inject constructor(
@@ -47,7 +48,10 @@ class RemoteConfigRepositoryImpl @Inject constructor(
         try {
             configureFetchInterval()
 
-            remoteConfig.fetchAndActivate().await()
+            withTimeout(10_000L) {
+                remoteConfig.fetchAndActivate().await()
+            }
+
             val key = if (BuildConfig.DEBUG) "test_json" else "prod_json"
 
             val responseJson = remoteConfig.getString(key)
